@@ -10,6 +10,8 @@ import sys
 class Measurement():
     '''This is an fork of spektroskop.py to show benedikt, how to use classes in his context.'''
 
+    pfad = os.path.abspath(".") + "\DATA\\"
+
     def __init__(self):
         '''even can call: self._prepare_test()'''
         self.prepare_com_port()
@@ -36,9 +38,8 @@ class Measurement():
 
     def prepare_path(self):
         try:
-            pfad = os.path.abspath(".") + "\DATA\\"
-            if not os.path.isdir(pfad):
-                os.mkdir(pfad)
+            if not os.path.isdir(self.pfad):
+                os.mkdir(self.pfad)
         except:
             a = input("Fehler beim Zugriff auf Pfad")
             sys.exit()
@@ -48,10 +49,10 @@ class Measurement():
         w = 1
         while w:
             try:
-                fobj_out = open(pfad + titel + ".csv","a")
+                fobj_out = open(self.pfad + titel + ".csv","a")
                 fobj_out.write("SPEKTROSKOPIE")
                 fobj_out.close()
-                print("Spektroskopie wird gespeicher unter: \n" + pfad + titel + ".csv")
+                print("Spektroskopie wird gespeicher unter: \n" + self.pfad + titel + ".csv")
                 w = 0
             except:
                 print("Fehler beim Zugriff auf Datei")
@@ -70,7 +71,7 @@ class Measurement():
                     x = ser.read()
                     z = ord(x)
                     liste[z] = liste[z] + 1
-                fobj_out = open(pfad + titel + ".csv","w")
+                fobj_out = open(self.pfad + titel + ".csv","w")
                 fobj_out.write("Messdauer;" + str(datetime.datetime.today() - zeit_beginn) + '\n')
                 for i in range(256):
                     fobj_out.write(str(i) + ";" + str(liste[i]) + '\n')
