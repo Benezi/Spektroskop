@@ -1,4 +1,2 @@
-ektroskop
+Spektroskop & Logger
 =========
-
-Sp
