@@ -23,13 +23,13 @@ class Measurement():
         self.prepare_com_port()
         self.prepare_path()
         self.get_title()
-    
+
     def prepare_com_port(self):
         port = input("COM-Port: ")
         w = 1
         while w:
             try:
-                ser = serial.Serial("Com" + port,19200,timeout=0)
+                self.ser = serial.Serial("Com" + port,19200,timeout=0)
                 w = 0
             except:
                 print("Fehler bei Verbindung!")
@@ -45,18 +45,18 @@ class Measurement():
             sys.exit()
 
     def get_title(self):
-        titel = input("Titel der Messreihe: ")
+        self.titel = input("Titel der Messreihe: ")
         w = 1
         while w:
             try:
-                fobj_out = open(self.pfad + titel + ".csv","a")
+                fobj_out = open(self.pfad + self.titel + ".csv","a")
                 fobj_out.write("SPEKTROSKOPIE")
                 fobj_out.close()
-                print("Spektroskopie wird gespeicher unter: \n" + self.pfad + titel + ".csv")
+                print("Spektroskopie wird gespeicher unter: \n" + self.pfad + self.titel + ".csv")
                 w = 0
             except:
                 print("Fehler beim Zugriff auf Datei")
-                titel = input("Anderer Dateiname: ")
+                self.titel = input("Anderer Dateiname: ")
                 w = 1
 
     def start_measurement(self):
@@ -66,12 +66,12 @@ class Measurement():
         zeit_beginn = datetime.datetime.today()
 
         while 1:
-            if ser.inWaiting() > 0:
-                while ser.inWaiting() > 0:
-                    x = ser.read()
+            if self.ser.inWaiting() > 0:
+                while self.ser.inWaiting() > 0:
+                    x = self.ser.read()
                     z = ord(x)
                     liste[z] = liste[z] + 1
-                fobj_out = open(self.pfad + titel + ".csv","w")
+                fobj_out = open(self.pfad + self.titel + ".csv","w")
                 fobj_out.write("Messdauer;" + str(datetime.datetime.today() - zeit_beginn) + '\n')
                 for i in range(256):
                     fobj_out.write(str(i) + ";" + str(liste[i]) + '\n')
@@ -79,6 +79,5 @@ class Measurement():
 
 
 if __name__ == "__main__":
-    measurement = Measurement()  #It calls the __init__-method and makes the preparation with the 3 encapsulated functions.
-    measurement.start_measurement()  ##  now we call the start_measurement method explicit.
-
+    measurement = Measurement() #It calls the __init__-method and makes the preparation with the 3 encapsulated functions.
+    measurement.start_measurement() # now we call the start_measurement method explicit.
