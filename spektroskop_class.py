@@ -34,7 +34,7 @@ class Measurement():
                 port = input("COM-Port: ")
                 w = 1
 
-    def prepare_path():
+    def prepare_path(self):
         try:
             pfad = os.path.abspath(".") + "\DATA\\"
             if not os.path.isdir(pfad):
@@ -43,7 +43,7 @@ class Measurement():
             a = input("Fehler beim Zugriff auf Pfad")
             sys.exit()
 
-    def get_title():
+    def get_title(self):
         titel = input("Titel der Messreihe: ")
         w = 1
         while w:
@@ -58,7 +58,7 @@ class Measurement():
                 titel = input("Anderer Dateiname: ")
                 w = 1
 
-    def start_measurement():
+    def start_measurement(self):
 
         liste = array.array('I',(0,)*256)
         print("Beginn der Messung: " + time.strftime("%d.%m.%Y um %H:%M:%S Uhr"))
